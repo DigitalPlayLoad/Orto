@@ -43,6 +43,27 @@ const getAutomaticNotes = (surg: any) => {
 
 const MOCK_SURGERIES: any[] = [];
 
+const DASHBOARD_CONFIG = {
+  showColetasCME: false,
+  stats: {
+    consultasSus: { current: 0, total: 59 },
+    cirurgias: 0,
+    pastaAzul: 0,
+    coletasCme: 0
+  }
+};
+
+const MATERIAIS_CARGA = [
+  { codigo: "1831", descricao: "curativo 2 peças", quantidade: 10 },
+  { codigo: "1833", descricao: "curativo 3 peças", quantidade: 10 },
+  { codigo: "1834", descricao: "curativo 5 peças", quantidade: 10 },
+  { codigo: "728", descricao: "AVUL_BACIA", quantidade: 8 },
+  { codigo: "1685", descricao: "Campo Fenestrado 50", quantidade: 5 },
+  { codigo: "801", descricao: "INAL_AMBU ADULTO/REANIMA...", quantidade: 1 },
+  { codigo: "802", descricao: "INAL_AMBU PEDIATRICO/REAN...", quantidade: 1 },
+  { codigo: "777", descricao: "INAL_MASCARA DE RESERVAT...", quantidade: 1 }
+];
+
 const DICAS_CATEGORIZADAS = [
   {
     category: "Sistemas e Prontuários",
@@ -99,6 +120,11 @@ const DICAS_CATEGORIZADAS = [
         title: "Luxação e Caixas de Ombro",
         desc: "Em caso de luxação, vai a caixa de ombro. Lembre-se de mandar foto para a Lorena.",
         icon: <Package className="w-5 h-5 text-indigo-500" />
+      },
+      {
+        title: "Pedido de Caixas OPME",
+        desc: "As caixas da OPME devem ser solicitadas com 2 a 3 dias de antecedência para garantir a disponibilidade.",
+        icon: <Package className="w-5 h-5 text-rose-500" />
       }
     ]
   },
@@ -130,6 +156,17 @@ const DICAS_CATEGORIZADAS = [
         title: "Códigos de Cirurgia (Aviso Importante)",
         desc: "Atenção (Aviso da Claudirene):\n- Código SUS: Começa com 4080\n- Código Convênio: Começa com 31\n- Fique atento: Códigos vindo como 31 em cirurgias SUS serão negadas.",
         icon: <AlertCircle className="w-5 h-5 text-rose-500" />
+      }
+    ]
+  },
+  {
+    category: "Financeiro e Valores",
+    icon: <FileText className="w-5 h-5 text-emerald-600" />,
+    items: [
+      {
+        title: "Infiltração com Ácido Hialurônico",
+        desc: "Custo do produto: R$ 2.000,00.\nO hospital oferece 18% de desconto se não for solicitada nota fiscal.",
+        icon: <Activity className="w-5 h-5 text-emerald-500" />
       }
     ]
   },
@@ -392,27 +429,28 @@ const TECHNICAL_TERMS = [
   { term: "Osteomielite", definition: "Infecção no osso, geralmente causada por bactérias que chegam via corrente sanguínea ou trauma exposto." },
   { term: "Necrose Avascular", definition: "Morte do tecido ósseo devido à interrupção do suprimento sanguíneo, comum na cabeça do fêmur." },
   { term: "Displasia do Quadril", definition: "Desenvolvimento anormal da articulação do quadril, onde a cabeça do fêmur não se encaixa bem no acetábulo." },
-  { term: "Hallux Valgus", definition: "Deformidade popularmente conhecida como 'joanete', caracterizada pelo desvio do dedão do pé para fora." }
+  { term: "Hallux Valgus", definition: "Deformidade popularmente conhecida como 'joanete', caracterizada pelo desvio do dedão do pé para fora." },
+  { term: "Lesão de Plexo Braquial", definition: "Lesão dos nervos que transmitem sinais da medula espinhal para o ombro, braço e mão. Principal lesão tratada pela equipe de microcirurgia." }
 ];
 
 const DAILY_TASKS = [
-  { id: 0, time: "07:00", task: "INÍCIO: Ligar computadores, checar PS Orto (higienização/fichas) e pedir kit curativo/instrumental.", done: false, alert: true },
-  { id: 2.5, time: "07:30", task: "Quarta/Quinta: Perguntar para a secretaria qual chefe da anestesia está hoje.", done: false, alert: true },
-  { id: 3, time: "08:00", task: "Passar vendo altas do particular.", done: true },
-  { id: 4, time: "10:00", task: "Avisar CME para buscar material no Curativo.", done: false },
-  { id: 5, time: "11:00", task: "MAPA: Printar Mapa Cirúrgico (Salas D e K) e mandar pro R4. Formalizar pedidos.", done: false, alert: true },
-  { id: 5.5, time: "12:00", task: "ALMOÇO: Intervalo de 1 hora (Retorno às 13:00).", done: false, alert: true },
-  { id: 7, time: "13:00", task: "RETORNO: Pedir kit curativo e bacia novamente (se necessário).", done: false },
-  { id: 6, time: "13:15", task: "REGULAÇÃO/NIR: Mandar mapa + UTI (vagas) + Equipes de amanhã para Regulação/NIR.", done: false, alert: true },
-  { id: 8, time: "14:00", task: "INTERNAÇÕES: Confirmar pacientes e avisar Claudirene (liberações cirúrgicas).", done: false, alert: true },
-  { id: 10, time: "14:30", task: "VAGAS: Verificar mapa de amanhã e avisar Jéssica (apartamentos se convênio particular).", done: false },
-  { id: 10.5, time: "15:00", task: "BATER MAPA (SUS/Convênio): Informar internações de amanhã para as especialidades.", done: false, alert: true, highlight: true },
-  { id: 11, time: "15:15", task: "Rotina Administrativa: Notas fiscais e documentação do particular no livro.", done: false },
-  { id: 13, time: "15:30", task: "FECHAMENTO: Contar atendimentos, guias e curativos. Alimentar planilha e Alta GSUS.", done: false, alert: true, highlight: true },
-  { id: 14, time: "16:00", task: "FIM DO EXPEDIENTE: Entregar pasta GSUS na recepção e desligar computadores.", done: false },
-  { id: 15, time: "Seg/Sex", task: "Segunda: Pegar tesouras / Sexta: Devolver tesouras.", done: false },
-  { id: 16, time: "Terça", task: "RESIDENTES: Carimbar guias (Lucas, Marcelo, Juan, Barbara) - Dividir por 4.", done: false, alert: true },
-  { id: 17, time: "Mão", task: "DIA DA MÃO: Carimbar com nome do Preceptor + Terapeuta Ocupacional (Curativo/Atendimento).", done: false, alert: true },
+  { id: 0, time: "07:00", task: "INÍCIO: Ligar computadores, checar PS Orto (higienização/fichas) e pedir kit curativo/instrumental.", done: false, alert: true, category: "rotina" },
+  { id: 2.5, time: "07:30", task: "Quarta/Quinta: Perguntar para a secretaria qual chefe da anestesia está hoje.", done: false, alert: true, category: "rotina" },
+  { id: 3, time: "08:00", task: "Passar vendo altas do particular.", done: true, category: "rotina" },
+  { id: 4, time: "10:00", task: "Avisar CME para buscar material no Curativo.", done: false, category: "rotina" },
+  { id: 5, time: "11:00", task: "MAPA: Printar Mapa Cirúrgico (Salas D e K) e mandar pro R4. Formalizar pedidos.", done: false, alert: true, category: "mapa" },
+  { id: 5.5, time: "12:00", task: "ALMOÇO: Intervalo de 1 hora (Retorno às 13:00).", done: false, alert: true, category: "rotina" },
+  { id: 7, time: "13:00", task: "RETORNO: Pedir kit curativo e bacia novamente (se necessário).", done: false, category: "rotina" },
+  { id: 6, time: "13:15", task: "REGULAÇÃO/NIR: Mandar mapa + UTI (vagas) + Equipes de amanhã para Regulação, Claudirene, Juliana (Internamento) e Grupo da Orto.", done: false, alert: true, category: "mapa" },
+  { id: 8, time: "14:00", task: "INTERNAÇÕES: Confirmar pacientes e avisar Claudirene (liberações cirúrgicas).", done: false, alert: true, category: "mapa" },
+  { id: 10, time: "14:30", task: "VAGAS: Verificar mapa de amanhã e avisar Jéssica (apartamentos se convênio particular).", done: false, category: "mapa" },
+  { id: 10.5, time: "15:00", task: "BATER MAPA (SUS/Convênio): Informar internações de amanhã para as especialidades.", done: false, alert: true, highlight: true, category: "mapa" },
+  { id: 11, time: "15:15", task: "Rotina Administrativa: Notas fiscais e documentação do particular no livro.", done: false, category: "fechamento" },
+  { id: 13, time: "15:30", task: "FECHAMENTO: Contar atendimentos, guias e curativos. Alimentar planilha e Alta GSUS.", done: false, alert: true, highlight: true, category: "fechamento" },
+  { id: 14, time: "16:00", task: "FIM DO EXPEDIENTE: Entregar pasta GSUS na recepção e desligar computadores.", done: false, category: "fechamento" },
+  { id: 15, time: "Seg/Sex", task: "Segunda: Pegar tesouras / Sexta: Devolver tesouras.", done: false, category: "especiais" },
+  { id: 16, time: "Terça", task: "RESIDENTES: Carimbar guias (Lucas, Marcelo, Juan, Barbara) - Dividir por 4.", done: false, alert: true, category: "especiais" },
+  { id: 17, time: "Mão", task: "DIA DA MÃO: Carimbar com nome do Preceptor + Terapeuta Ocupacional (Curativo/Atendimento).", done: false, alert: true, category: "especiais" },
 ];
 
 const getTimePriority = (time: string) => {
@@ -430,9 +468,9 @@ const getTimePriority = (time: string) => {
 };
 
 const WEEKLY_ROUTINE = [
-  { day: "Segunda-feira", tasks: ["Ir com técnico no PS para deixar organizado (não olham no FDS).", "Pegar tesouras (comum e de cortar gesso).", "OPME: Repassar as fraturas de final de semana para dar saída de sala."] },
+  { day: "Segunda-feira", tasks: ["Ir com técnico no PS para deixar organizado (não olham no FDS).", "Pegar tesouras (comum e de cortar gesso).", "OPME: Repassar as fraturas de final de semana para dar saída de sala.", "Obs: Na especialidade de Pé, só vem um médico por vez conforme escala."] },
   { day: "Terça-feira", tasks: ["Pedir almoxarifado (pela manhã).", "Pedido da Orto ambulância (materiais de escritório)."] },
-  { day: "Quarta-feira", tasks: [] },
+  { day: "Quarta-feira", tasks: ["CC2: Hoje a Ortopedia só pega a equipe de Mão.", "Mapas e agendamento cirúrgico."] },
   { day: "Quinta-feira", tasks: ["Pedir instrumental antes das 20:00 (muito utilizado neste dia)."] },
   { day: "Sexta-feira", tasks: ["Pedir almoxarifado (pela manhã).", "Devolver tesouras."] }
 ];
@@ -469,6 +507,7 @@ const PROTOCOLS = [
       { title: "Vagas de UTI", desc: "Monitorar a necessidade, pois a confirmação depende da liberação do risco cirúrgico. É obrigatório pontuar e formalizar no mapa cirúrgico quantas vagas de UTI foram solicitadas." },
       { title: "Risco Cirúrgico", desc: "Realizado pelo cardiologista e pelo anestesista. A informação deve ser repassada ao anestesista no momento da entrega do mapa (Avisar a Cris e o chefe da anestesia)." },
       { title: "Raio-X", desc: "Alinhar com o responsável pelo setor sobre a disponibilidade de horários e informar especificamente qual parte do corpo precisará da imagem." },
+      { title: "Salas de Cirurgia (CC2)", desc: "No CC2 opera preferencialmente o Dr. Ivan Killing, porém os médicos têm autonomia total para decidir onde desejam operar seus pacientes." },
       { title: "Comunicação do Mapa", desc: "O mapa cirúrgico e o OPME devem ser compartilhados com a equipe médica, residentes, regulação e setores de apoio." },
       { title: "Bater Mapa (SUS/Convênio)", desc: "Lembrar e reforçar que devemos bater o mapa com o pessoal do SUS e Convênio dos pacientes que irão internar um dia antes para informar a elas quem será." },
       { title: "Cancelamento de Cirurgia", desc: "Quando o Dr. não atende, devemos cancelar a cirurgia." },
@@ -600,7 +639,7 @@ const PROTOCOLS = [
       { title: "Mão e Microcirurgia", desc: "Dr. Ivan e Dra. Marcela. Máximo de 5 cirurgias por dia na especialidade. Enviar guia inicial para conferência de material." },
       { title: "Pediátrica e Reconstrução", desc: "Dr. Erick e Dra. Ana Paula. Prioridade no mapa cirúrgico (por idade, menor primeiro). Jejum prolongado é prejudicial." },
       { title: "Quadril e Joelho", desc: "Dr. Juan, Dr. Bernardo, Dra. Barbara, Dr. Lucas. Cirurgias de alta complexidade (próteses, revisões, fraturas de fêmur) exigem solicitação de sangue e reserva de UTI." },
-      { title: "Pé e Tornozelo", desc: "Dr. Mario, Dr. Juliano M., Dr. Augusto. (Procedimentos específicos a definir)." },
+      { title: "Pé e Tornozelo", desc: "Dr. Mario, Dr. Juliano M., Dr. Augusto. (Obs: Na segunda-feira só vem um médico por vez conforme escala)." },
       { title: "Ombro", desc: "Dr. Juliano Santini. (Procedimentos específicos a definir)." },
       { title: "Tumor Ósseo", desc: "Dr. João Pedro Motter. (Procedimentos específicos a definir)." }
     ]
@@ -634,7 +673,7 @@ const MAPAS_ESPECIALIDADES = [
 
 const PRECEPTORES = [
   { doctor: "Dr. Juan Capriotti (Chefe da Ortopedia)", specialty: "Joelho", time: "Segunda de manhã" },
-  { doctor: "Dr. Mario / Dr. Juliano M. / Dr. Augusto", specialty: "Pé e Tornozelo", time: "Segunda-feira" },
+  { doctor: "Dr. Mario / Dr. Juliano M. / Dr. Augusto", specialty: "Pé e Tornozelo", time: "Segunda-feira", note: "Apenas um médico por vez conforme escala" },
   { doctor: "Dra. Barbara / Dr. Lucas", specialty: "Quadril", time: "Terça-feira" },
   { doctor: "Dr. João Pedro Motter", specialty: "Tumor Ósseo", time: "Terça-feira" },
   { doctor: "Dr. Juliano Santini Gerlack", specialty: "Ombro", time: "Quarta-feira" },
@@ -686,7 +725,7 @@ const ROTEIRO_STEPS = [
       "OPME: Peça o material por e-mail. Fios de Kischner 2.0 e 2.5 vão na caixa OPME. Código itens OPME: 47716. Código caixa OPME: 13.",
       "Sangue: Obrigatório para alta complexidade (próteses, fêmur). Paciente internado = coleta hoje. Interna amanhã = avise Jéssica (Convênio) ou Eliane (SUS).",
       "UTI e Risco: Anote no mapa se precisa de UTI. Avise a Cris e o chefe da anestesia sobre o risco cirúrgico.",
-      "Prazos do Mapa: 11:00 printar e mandar pro R4. 12:40 mandar para OPME e Regulação."
+      "Prazos do Mapa: 11:00 printar e mandar pro R4. 13:15 mandar para Regulação, Claudirene, Juliana (Internamento) e Grupo da Orto."
     ]
   },
   {
@@ -794,16 +833,37 @@ const CollapsibleProtocolItem: React.FC<{ item: { title: string, desc: string },
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [dashboardSubTab, setDashboardSubTab] = useState('todos');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [popCollapseSignal, setPopCollapseSignal] = useState(0);
-  const [sigtapSearchQuery, setSigtapSearchQuery] = useState('');
-  const [techTermsSearchQuery, setTechTermsSearchQuery] = useState('');
   const [dailyTasks, setDailyTasks] = useState(DAILY_TASKS);
   const [newTaskInput, setNewTaskInput] = useState('');
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
   const [editingTaskValue, setEditingTaskValue] = useState({ task: '', time: '' });
   const [mapChecklist, setMapChecklist] = useState(MAPAS_ESPECIALIDADES.map(s => ({ ...s, done: false })));
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const resetTasks = () => {
+    setDailyTasks(prev => prev.map(t => ({ ...t, done: false })));
+  };
+
+  const CATEGORIES = {
+    todos: 'Todas',
+    rotina: 'Rotina',
+    mapa: 'Mapa/Logística',
+    fechamento: 'Fechamento',
+    especiais: 'Especiais'
+  };
+
+  const getProgress = (category?: string) => {
+    const tasks = category && category !== 'todos' 
+      ? dailyTasks.filter(t => t.category === category)
+      : dailyTasks;
+    if (tasks.length === 0) return 0;
+    const done = tasks.filter(t => t.done).length;
+    return Math.round((done / tasks.length) * 100);
+  };
 
   const exportTasks = () => {
     const dataStr = JSON.stringify(dailyTasks, null, 2);
@@ -861,7 +921,10 @@ export default function App() {
     setEditingTaskId(null);
   };
   const [lastMapAdjustment, setLastMapAdjustment] = useState<Date | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode');
+    return saved ? JSON.parse(saved) : false;
+  });
 
   const toggleMapCheck = (id: string) => {
     setMapChecklist(prev => prev.map(item => 
@@ -871,6 +934,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -892,7 +956,8 @@ export default function App() {
       time,
       task: taskText,
       done: false,
-      alert: false
+      alert: false,
+      category: dashboardSubTab === 'todos' ? 'rotina' : dashboardSubTab
     };
     setDailyTasks(prev => [...prev, newTask]);
   };
@@ -900,6 +965,22 @@ export default function App() {
   const deleteTask = (id: number) => {
     setDailyTasks(prev => prev.filter(t => t.id !== id));
   };
+
+  const filteredRamais = RAMAIS_DATA.map(category => ({
+    ...category,
+    items: category.items.filter(item => 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.numbers.some(n => n.includes(searchQuery))
+    )
+  })).filter(category => category.items.length > 0);
+
+  const filteredDicas = DICAS_CATEGORIZADAS.map(category => ({
+    ...category,
+    items: category.items.filter(item => 
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.desc.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.items.length > 0);
 
   const filteredProtocols = PROTOCOLS.map(section => {
     const sectionMatches = section.category.toLowerCase().includes(searchQuery.toLowerCase());
@@ -1009,7 +1090,16 @@ export default function App() {
               >
                 <Search className={`w-5 h-5 ${activeTab === 'sigtap' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} /> SIGTAP SUS
               </button>
-
+            </li>
+            <li>
+              <button 
+                onClick={() => setActiveTab('materiais')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-medium text-sm ${activeTab === 'materiais' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
+              >
+                <Package className={`w-5 h-5 ${activeTab === 'materiais' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} /> Materiais
+              </button>
+            </li>
+            <li>
               <button 
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-medium text-sm ${activeTab === 'ramais' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
                 onClick={() => setActiveTab('ramais')}
@@ -1092,7 +1182,9 @@ export default function App() {
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input 
                 type="text" 
-                placeholder="Buscar paciente ou protocolo..." 
+                placeholder="Buscar em todo o sistema..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 outline-none transition-all w-64 placeholder:text-slate-400 shadow-sm dark:text-white"
               />
             </div>
@@ -1115,7 +1207,7 @@ export default function App() {
         <div className="md:hidden bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-900 px-4 py-3 shrink-0 flex flex-col gap-2 sticky top-0 z-10">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-500 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent capitalize tracking-tight">
-              {activeTab === 'mapa' ? 'Mapa Cirúrgico' : activeTab === 'roteiro' ? 'Roteiro Prático' : activeTab === 'preceptores' ? 'Preceptores' : activeTab === 'dicas' ? 'Dicas e Macetes' : activeTab === 'termos' ? 'Termos Técnicos' : activeTab === 'ramais' ? 'Ramais Úteis' : activeTab}
+              {activeTab === 'mapa' ? 'Mapa Cirúrgico' : activeTab === 'roteiro' ? 'Roteiro Prático' : activeTab === 'preceptores' ? 'Preceptores' : activeTab === 'dicas' ? 'Dicas e Macetes' : activeTab === 'termos' ? 'Termos Técnicos' : activeTab === 'ramais' ? 'Ramais Úteis' : activeTab === 'materiais' ? 'Materiais' : activeTab}
             </h2>
             <div className="flex items-center gap-2">
               <button 
@@ -1124,11 +1216,45 @@ export default function App() {
               >
                 {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
-              <button className="p-2 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+              <button 
+                onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
+                className={`p-2 rounded-full transition-colors ${isMobileSearchOpen ? 'bg-blue-600 text-white' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+              >
                 <Search className="w-4 h-4" />
               </button>
             </div>
           </div>
+          
+          <AnimatePresence>
+            {isMobileSearchOpen && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="relative mt-1 mb-2">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input 
+                    type="text"
+                    placeholder="Buscar..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    autoFocus
+                    className="w-full pl-9 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-white"
+                  />
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           
           {/* Ramal Banner Mobile Sticky */}
           <div className="flex items-center justify-between bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/50 rounded-lg px-3 py-2">
@@ -1154,6 +1280,48 @@ export default function App() {
               transition={{ duration: 0.3 }}
               className="space-y-4 md:space-y-6 max-w-6xl mx-auto"
             >
+              {/* Resumo de Pendências */}
+              <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 md:p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <CheckSquare className="w-5 h-5 text-blue-600" />
+                    Progresso das Pendências
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    <button 
+                      onClick={resetTasks}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-all border border-transparent hover:border-rose-200 dark:hover:border-rose-800"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" /> Resetar Tudo
+                    </button>
+                    <div className="text-right">
+                      <span className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">{getProgress('todos')}%</span>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest">Concluído Hoje</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {Object.entries(CATEGORIES).filter(([key]) => key !== 'todos').map(([key, label]) => {
+                    const progress = getProgress(key);
+                    return (
+                      <div key={key} className="space-y-2">
+                        <div className="flex justify-between items-end">
+                          <span className="text-xs font-bold text-slate-600 dark:text-slate-400">{label}</span>
+                          <span className="text-xs font-mono font-bold text-slate-800 dark:text-white">{progress}%</span>
+                        </div>
+                        <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            className={`h-full rounded-full ${progress === 100 ? 'bg-emerald-500' : 'bg-blue-500'}`}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
               
               {/* OPME Banner */}
               <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl shadow-md border border-transparent overflow-hidden text-white p-5 md:p-6">
@@ -1244,7 +1412,7 @@ export default function App() {
               </div>
 
               {/* Stats Row */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 <div className="bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-700 transition-colors group">
                   <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
                     <div className="p-2.5 md:p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl w-fit group-hover:bg-blue-600 dark:group-hover:bg-blue-500 group-hover:text-white transition-colors">
@@ -1252,7 +1420,7 @@ export default function App() {
                     </div>
                     <div>
                       <p className="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Consultas SUS</p>
-                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">0 <span className="text-sm md:text-base font-medium text-slate-400 dark:text-slate-500">/ 59</span></p>
+                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">{DASHBOARD_CONFIG.stats.consultasSus.current} <span className="text-sm md:text-base font-medium text-slate-400 dark:text-slate-500">/ {DASHBOARD_CONFIG.stats.consultasSus.total}</span></p>
                     </div>
                   </div>
                 </div>
@@ -1263,7 +1431,7 @@ export default function App() {
                     </div>
                     <div>
                       <p className="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Cirurgias</p>
-                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">{MOCK_SURGERIES.length}</p>
+                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">{DASHBOARD_CONFIG.stats.cirurgias}</p>
                     </div>
                   </div>
                 </div>
@@ -1274,41 +1442,61 @@ export default function App() {
                     </div>
                     <div>
                       <p className="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Pasta Azul</p>
-                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">0</p>
+                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">{DASHBOARD_CONFIG.stats.pastaAzul}</p>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-purple-200 dark:hover:border-purple-700 transition-colors group">
-                  <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
-                    <div className="p-2.5 md:p-3 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl w-fit group-hover:bg-purple-600 dark:group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                      <Syringe className="w-5 h-5 md:w-6 md:h-6" />
-                    </div>
-                    <div>
-                      <p className="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Coletas CME</p>
-                      <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">0</p>
+                {DASHBOARD_CONFIG.showColetasCME && (
+                  <div className="bg-white dark:bg-slate-900 p-4 md:p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-purple-200 dark:hover:border-purple-700 transition-colors group">
+                    <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+                      <div className="p-2.5 md:p-3 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl w-fit group-hover:bg-purple-600 dark:group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                        <Syringe className="w-5 h-5 md:w-6 md:h-6" />
+                      </div>
+                      <div>
+                        <p className="text-[11px] md:text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Coletas CME</p>
+                        <p className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white font-mono tracking-tight">{DASHBOARD_CONFIG.stats.coletasCme}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                 {/* Pendências não realizadas */}
                 <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col h-full">
-                  <div className="p-4 md:p-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
-                    <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2 text-sm md:text-base">
-                      <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-orange-500" /> Pendências
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full">
-                        {dailyTasks.filter(t => !t.done).length}
-                      </span>
+                  <div className="p-4 md:p-5 border-b border-slate-100 dark:border-slate-800 flex flex-col gap-4 bg-slate-50/50 dark:bg-slate-900/50">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2 text-sm md:text-base">
+                        <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-orange-500" /> Pendências
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full">
+                          {dailyTasks.filter(t => !t.done && (dashboardSubTab === 'todos' || t.category === dashboardSubTab)).length}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1 overflow-x-auto pb-2 scrollbar-hide">
+                      {Object.entries(CATEGORIES).map(([key, label]) => (
+                        <button
+                          key={key}
+                          onClick={() => setDashboardSubTab(key)}
+                          className={`px-3 py-1.5 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap transition-all ${
+                            dashboardSubTab === key 
+                              ? 'bg-blue-600 text-white shadow-sm' 
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
                     </div>
                   </div>
                   
                   <div className="p-0 flex-1 flex flex-col overflow-y-auto max-h-[320px]">
-                    {dailyTasks.filter(t => !t.done).length > 0 ? (
+                    {dailyTasks.filter(t => !t.done && (dashboardSubTab === 'todos' || t.category === dashboardSubTab)).length > 0 ? (
                       [...dailyTasks]
-                        .filter(t => !t.done)
+                        .filter(t => !t.done && (dashboardSubTab === 'todos' || t.category === dashboardSubTab))
                         .sort((a, b) => getTimePriority(a.time) - getTimePriority(b.time))
                         .map(task => (
                         <div 
@@ -1418,6 +1606,7 @@ export default function App() {
                   </div>
                   <div className="p-0 flex-1 flex flex-col">
                     {[...dailyTasks]
+                      .filter(t => dashboardSubTab === 'todos' || t.category === dashboardSubTab)
                       .sort((a, b) => getTimePriority(a.time) - getTimePriority(b.time))
                       .slice(0, 5)
                       .map(task => (
@@ -1501,19 +1690,27 @@ export default function App() {
 
               {/* Tabela de Valores */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="p-4 md:p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+                <div className="p-4 md:p-5 border-b border-slate-100 dark:border-slate-800 bg-emerald-50/30 dark:bg-emerald-900/10">
                   <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2 text-sm md:text-base">
-                    <FileText className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" /> Tabela de Valores (Consultas)
+                    <FileText className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" /> Tabela de Valores & Infiltrações
                   </h3>
                 </div>
-                <div className="p-4 md:p-5 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
-                  <div className="flex justify-between items-center p-3.5 md:p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <span className="text-slate-700 dark:text-slate-300 font-medium text-sm md:text-base">Avaliação Pré-Anestésica</span>
-                    <span className="text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800/50 px-2.5 py-1 rounded-lg text-sm md:text-base font-mono">R$ 250,00</span>
+                <div className="p-4 md:p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-emerald-200 transition-colors">
+                    <p className="text-[10px] font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-wider mb-1">Ácido Hialurônico</p>
+                    <p className="text-sm font-bold text-slate-800 dark:text-white">R$ 2.000,00 (Só o Produto)</p>
+                    <div className="mt-2 p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-100 dark:border-emerald-800/50">
+                      <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">18% de DESCONTO</p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Se não pedir nota fiscal (Hospital)</p>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center p-3.5 md:p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <span className="text-slate-700 dark:text-slate-300 font-medium text-sm md:text-base">Consulta Online</span>
-                    <span className="text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800/50 px-2.5 py-1 rounded-lg text-sm md:text-base font-mono">R$ 200,00</span>
+                  <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-emerald-200 transition-colors">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Avaliação Pré-Anestésica</p>
+                    <p className="text-sm font-bold text-slate-800 dark:text-white">R$ 250,00</p>
+                  </div>
+                  <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:border-emerald-200 transition-colors">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Consulta Online</p>
+                    <p className="text-sm font-bold text-slate-800 dark:text-white">R$ 200,00</p>
                   </div>
                 </div>
               </div>
@@ -1770,53 +1967,74 @@ export default function App() {
               </div>
 
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="p-4 md:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-base md:text-lg font-semibold text-slate-800 dark:text-white">Checklist do Plantão</h3>
-                    <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-1">Marque as tarefas conforme forem concluídas.</p>
-                  </div>
-                  <div className="flex flex-col md:flex-row items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <button 
-                        onClick={exportTasks}
-                        className="text-[10px] md:text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 transition-colors flex items-center gap-1"
-                        title="Exportar como JSON"
-                      >
-                        <Download className="w-3 h-3" /> Exportar
-                      </button>
-                      <button 
-                        onClick={() => fileInputRef.current?.click()}
-                        className="text-[10px] md:text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 transition-colors flex items-center gap-1"
-                        title="Importar de JSON"
-                      >
-                        <Upload className="w-3 h-3" /> Importar
-                      </button>
-                      <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        onChange={importTasks} 
-                        accept=".json" 
-                        className="hidden" 
-                      />
+                <div className="p-4 md:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex flex-col gap-6">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-base md:text-lg font-semibold text-slate-800 dark:text-white">Checklist do Plantão</h3>
+                      <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-1">Marque as tarefas conforme forem concluídas.</p>
                     </div>
-                    <button 
-                      onClick={() => {
-                        if (window.confirm('Deseja resetar todas as tarefas para o padrão original?')) {
-                          setDailyTasks(DAILY_TASKS);
-                        }
-                      }}
-                      className="text-xs font-bold text-slate-400 hover:text-rose-500 transition-colors flex items-center gap-1"
-                    >
-                      <Trash2 className="w-3 h-3" /> Resetar padrão
-                    </button>
-                    <div className="flex items-center gap-3">
-                      <div className="w-full md:w-32 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5">
-                        <div className="bg-emerald-500 dark:bg-emerald-400 h-2.5 rounded-full transition-all duration-500" style={{ width: `${(dailyTasks.filter(t => t.done).length / dailyTasks.length) * 100}%` }}></div>
+                    <div className="flex flex-col md:flex-row items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={exportTasks}
+                          className="text-[10px] md:text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 transition-colors flex items-center gap-1"
+                          title="Exportar como JSON"
+                        >
+                          <Download className="w-3 h-3" /> Exportar
+                        </button>
+                        <button 
+                          onClick={() => fileInputRef.current?.click()}
+                          className="text-[10px] md:text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-600 transition-colors flex items-center gap-1"
+                          title="Importar de JSON"
+                        >
+                          <Upload className="w-3 h-3" /> Importar
+                        </button>
+                        <input 
+                          type="file" 
+                          ref={fileInputRef} 
+                          onChange={importTasks} 
+                          accept=".json" 
+                          className="hidden" 
+                        />
                       </div>
-                      <span className="text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                        {dailyTasks.filter(t => t.done).length} de {dailyTasks.length}
-                      </span>
+                      <button 
+                        onClick={() => {
+                          if (window.confirm('Deseja resetar todas as tarefas para o padrão original?')) {
+                            setDailyTasks(DAILY_TASKS);
+                          }
+                        }}
+                        className="text-xs font-bold text-slate-400 hover:text-rose-500 transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3 h-3" /> Resetar padrão
+                      </button>
+                      <div className="flex items-center gap-3">
+                        <div className="w-full md:w-32 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5">
+                          <div className="bg-emerald-500 dark:bg-emerald-400 h-2.5 rounded-full transition-all duration-500" style={{ width: `${getProgress(dashboardSubTab)}%` }}></div>
+                        </div>
+                        <span className="text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                          {dailyTasks.filter(t => t.done && (dashboardSubTab === 'todos' || t.category === dashboardSubTab)).length} de {dailyTasks.filter(t => dashboardSubTab === 'todos' || t.category === dashboardSubTab).length}
+                        </span>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 overflow-x-auto pb-2 scrollbar-hide">
+                    {Object.entries(CATEGORIES).map(([key, label]) => (
+                      <button
+                        key={key}
+                        onClick={() => setDashboardSubTab(key)}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                          dashboardSubTab === key 
+                            ? 'bg-blue-600 text-white shadow-md scale-105' 
+                            : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
+                        }`}
+                      >
+                        {label}
+                        <span className={`ml-2 px-1.5 py-0.5 rounded-md text-[10px] ${dashboardSubTab === key ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500'}`}>
+                          {getProgress(key)}%
+                        </span>
+                      </button>
+                    ))}
                   </div>
                 </div>
                 
@@ -1858,6 +2076,7 @@ export default function App() {
 
                 <div className="divide-y divide-slate-100 dark:divide-slate-800">
                   {[...dailyTasks]
+                    .filter(t => dashboardSubTab === 'todos' || t.category === dashboardSubTab)
                     .sort((a, b) => getTimePriority(a.time) - getTimePriority(b.time))
                     .map(task => (
                     <div 
@@ -2020,7 +2239,7 @@ export default function App() {
                 >
                   <ChevronUp className="w-3 h-3" /> Recolher Tudo
                 </button>
-                {PROTOCOLS.map((section, idx) => (
+                {filteredProtocols.map((section, idx) => (
                   <button
                     key={idx}
                     onClick={() => {
@@ -2153,6 +2372,11 @@ export default function App() {
                         <div className="flex flex-col">
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Visita Comercial</span>
                           <span>{item.time}</span>
+                          {item.note && (
+                            <span className="text-[10px] font-bold text-rose-500 dark:text-rose-400 mt-1 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-md border border-rose-100 dark:border-rose-800/50 w-fit">
+                              {item.note}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -2179,6 +2403,11 @@ export default function App() {
                                 {item.doctor.charAt(0)}
                               </div>
                               <div className="font-medium text-slate-800 dark:text-white text-base">{item.doctor}</div>
+                              {item.note && (
+                                <div className="text-[10px] font-bold text-rose-500 dark:text-rose-400 uppercase tracking-tight mt-1 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-md border border-rose-100 dark:border-rose-800/50 w-fit">
+                                  {item.note}
+                                </div>
+                              )}
                             </div>
                           </td>
                           <td className="py-4 px-6">
@@ -2209,48 +2438,64 @@ export default function App() {
               transition={{ duration: 0.3 }}
               className="max-w-5xl mx-auto space-y-6 pb-24"
             >
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Dicas e Macetes</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Atalhos, macetes de sistema e informações úteis do dia a dia organizados por categoria.</p>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Dicas e Macetes</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Atalhos, macetes de sistema e informações úteis do dia a dia organizados por categoria.</p>
+                </div>
+                {searchQuery && (
+                  <div className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-full flex items-center gap-2">
+                    <Search className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xs font-bold text-blue-700 dark:text-blue-300">Filtrando por: "{searchQuery}"</span>
+                    <button onClick={() => setSearchQuery('')} className="text-blue-400 hover:text-blue-600"><X className="w-3 h-3" /></button>
+                  </div>
+                )}
               </div>
 
-              <div className="space-y-8">
-                {DICAS_CATEGORIZADAS.map((categoria, catIdx) => (
-                  <div key={catIdx} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div className="bg-slate-50/50 dark:bg-slate-900/50 p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
-                      <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
-                        {categoria.icon}
+              {filteredDicas.length === 0 ? (
+                <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+                  <Search className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                  <p className="text-slate-500">Nenhuma dica encontrada para "{searchQuery}"</p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {filteredDicas.map((categoria, catIdx) => (
+                    <div key={catIdx} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                      <div className="bg-slate-50/50 dark:bg-slate-900/50 p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+                        <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                          {categoria.icon}
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-800 dark:text-white">{categoria.category}</h3>
                       </div>
-                      <h3 className="text-lg font-bold text-slate-800 dark:text-white">{categoria.category}</h3>
-                    </div>
-                    <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                      {categoria.items.map((dica, idx) => (
-                        <div key={idx} className="bg-slate-50/50 dark:bg-slate-900/30 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-md transition-shadow hover:bg-white dark:hover:bg-slate-800/80">
-                          <div className="flex items-start gap-4">
-                            <div className="p-2.5 bg-white dark:bg-slate-800 rounded-lg shadow-sm shrink-0">
-                              {dica.icon}
-                            </div>
-                            <div>
-                              <h4 className="font-bold text-slate-800 dark:text-white mb-1.5 text-sm md:text-base">{dica.title}</h4>
-                              <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{dica.desc}</p>
-                              {dica.link && (
-                                <a 
-                                  href={dica.link} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-                                >
-                                  Acessar Link <ExternalLink className="w-3 h-3" />
-                                </a>
-                              )}
+                      <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        {categoria.items.map((dica, idx) => (
+                          <div key={idx} className="bg-slate-50/50 dark:bg-slate-900/30 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-md transition-shadow hover:bg-white dark:hover:bg-slate-800/80">
+                            <div className="flex items-start gap-4">
+                              <div className="p-2.5 bg-white dark:bg-slate-800 rounded-lg shadow-sm shrink-0">
+                                {dica.icon}
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-slate-800 dark:text-white mb-1.5 text-sm md:text-base">{dica.title}</h4>
+                                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{dica.desc}</p>
+                                {dica.link && (
+                                  <a 
+                                    href={dica.link} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                                  >
+                                    Acessar Link <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -2280,8 +2525,8 @@ export default function App() {
                       <input 
                         type="text"
                         placeholder="Pesquisar termo ou definição..."
-                        value={techTermsSearchQuery}
-                        onChange={(e) => setTechTermsSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-blue-200 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all shadow-inner text-base"
                       />
                     </div>
@@ -2291,8 +2536,8 @@ export default function App() {
                 <div className="p-4 md:p-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     {TECHNICAL_TERMS.filter(item => 
-                      item.term.toLowerCase().includes(techTermsSearchQuery.toLowerCase()) || 
-                      item.definition.toLowerCase().includes(techTermsSearchQuery.toLowerCase())
+                      item.term.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      item.definition.toLowerCase().includes(searchQuery.toLowerCase())
                     ).map((item, idx) => (
                       <motion.div 
                         key={idx}
@@ -2320,8 +2565,8 @@ export default function App() {
                   </div>
 
                   {TECHNICAL_TERMS.filter(item => 
-                    item.term.toLowerCase().includes(techTermsSearchQuery.toLowerCase()) || 
-                    item.definition.toLowerCase().includes(techTermsSearchQuery.toLowerCase())
+                    item.term.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    item.definition.toLowerCase().includes(searchQuery.toLowerCase())
                   ).length === 0 && (
                     <div className="py-20 text-center">
                       <div className="flex flex-col items-center gap-4">
@@ -2333,7 +2578,7 @@ export default function App() {
                           <p className="text-slate-500 dark:text-slate-400">Tente pesquisar com outras palavras-chave.</p>
                         </div>
                         <button 
-                          onClick={() => setTechTermsSearchQuery('')}
+                          onClick={() => setSearchQuery('')}
                           className="mt-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors shadow-lg shadow-blue-200 dark:shadow-none"
                         >
                           Limpar Pesquisa
@@ -2366,8 +2611,8 @@ export default function App() {
                   type="text"
                   placeholder="Pesquisar por código ou descrição (ex: 0408010018 ou Quadril)..."
                   className="block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm text-slate-800 dark:text-white placeholder:text-slate-400"
-                  value={sigtapSearchQuery}
-                  onChange={(e) => setSigtapSearchQuery(e.target.value)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
@@ -2383,8 +2628,8 @@ export default function App() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       {SIGTAP_CODES.filter(item => 
-                        item.code.includes(sigtapSearchQuery) || 
-                        item.desc.toLowerCase().includes(sigtapSearchQuery.toLowerCase())
+                        item.code.includes(searchQuery) || 
+                        item.desc.toLowerCase().includes(searchQuery.toLowerCase())
                       ).map((item, idx) => (
                         <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-colors group">
                           <td className="py-4 px-6">
@@ -2417,14 +2662,14 @@ export default function App() {
                         </tr>
                       ))}
                       {SIGTAP_CODES.filter(item => 
-                        item.code.includes(sigtapSearchQuery) || 
-                        item.desc.toLowerCase().includes(sigtapSearchQuery.toLowerCase())
+                        item.code.includes(searchQuery) || 
+                        item.desc.toLowerCase().includes(searchQuery.toLowerCase())
                       ).length === 0 && (
                         <tr>
                           <td colSpan={3} className="py-12 text-center">
                             <div className="flex flex-col items-center gap-3">
                               <Search className="w-10 h-10 text-slate-300 dark:text-slate-600" />
-                              <p className="text-slate-500 dark:text-slate-400 font-medium">Nenhum código encontrado para "{sigtapSearchQuery}"</p>
+                              <p className="text-slate-500 dark:text-slate-400 font-medium">Nenhum código encontrado para "{searchQuery}"</p>
                             </div>
                           </td>
                         </tr>
@@ -2444,62 +2689,115 @@ export default function App() {
               transition={{ duration: 0.3 }}
               className="max-w-5xl mx-auto space-y-8 pb-24"
             >
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Ramais Úteis</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Lista completa de ramais internos do hospital.</p>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Ramais Úteis</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Lista completa de ramais internos do hospital.</p>
+                </div>
+                {searchQuery && (
+                  <div className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-full flex items-center gap-2">
+                    <Search className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xs font-bold text-blue-700 dark:text-blue-300">Filtrando por: "{searchQuery}"</span>
+                    <button onClick={() => setSearchQuery('')} className="text-blue-400 hover:text-blue-600"><X className="w-3 h-3" /></button>
+                  </div>
+                )}
               </div>
 
-              {RAMAIS_DATA.map((category, catIdx) => (
-                <div key={catIdx} className="space-y-4">
-                  <div className="flex items-center gap-3 px-2">
-                    <div className="p-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-                      {category.icon}
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{category.category}</h3>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {category.items.map((item, itemIdx) => (
-                      <div 
-                        key={itemIdx} 
-                        className={`p-4 rounded-2xl border transition-all ${
-                          item.highlight 
-                            ? 'bg-blue-50/50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800/50 shadow-sm' 
-                            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm'
-                        }`}
-                      >
-                        <div className="flex justify-between items-start gap-4">
-                          <div className="flex-1">
-                            <h4 className={`text-sm font-bold mb-2 ${item.highlight ? 'text-blue-700 dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}>
-                              {item.name}
-                            </h4>
-                            <div className="flex flex-wrap gap-2">
-                              {item.numbers.map((num, nIdx) => (
-                                <span 
-                                  key={nIdx}
-                                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-sm font-mono font-bold ${
-                                    item.highlight
-                                      ? 'bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200'
-                                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-                                  }`}
-                                >
-                                  <Phone className="w-3 h-3" />
-                                  {num}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          {item.highlight && (
-                            <div className="p-1.5 bg-blue-100 dark:bg-blue-800 rounded-lg">
-                              <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-300" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+              {filteredRamais.length === 0 ? (
+                <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+                  <Search className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                  <p className="text-slate-500">Nenhum ramal encontrado para "{searchQuery}"</p>
                 </div>
-              ))}
+              ) : (
+                filteredRamais.map((category, catIdx) => (
+                  <div key={catIdx} className="space-y-4">
+                    <div className="flex items-center gap-3 px-2">
+                      <div className="p-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+                        {category.icon}
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">{category.category}</h3>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {category.items.map((item, itemIdx) => (
+                        <div 
+                          key={itemIdx} 
+                          className={`p-4 rounded-2xl border transition-all ${
+                            item.highlight 
+                              ? 'bg-blue-50/50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800/50 shadow-sm' 
+                              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm'
+                          }`}
+                        >
+                          <div className="flex justify-between items-start gap-4">
+                            <div className="flex-1">
+                              <h4 className={`text-sm font-bold mb-2 ${item.highlight ? 'text-blue-700 dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}>
+                                {item.name}
+                              </h4>
+                              <div className="flex flex-wrap gap-2">
+                                {item.numbers.map((num, nIdx) => (
+                                  <span 
+                                    key={nIdx}
+                                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-sm font-mono font-bold ${
+                                      item.highlight
+                                        ? 'bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200'
+                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                                    }`}
+                                  >
+                                    <Phone className="w-3 h-3" />
+                                    {num}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                            {item.highlight && (
+                              <div className="p-1.5 bg-blue-100 dark:bg-blue-800 rounded-lg">
+                                <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-300" />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              )}
+            </motion.div>
+          )}
+
+          {/* --- MATERIAIS VIEW --- */}
+          {activeTab === 'materiais' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="max-w-5xl mx-auto space-y-6 pb-24"
+            >
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                  <Package className="w-6 h-6 text-emerald-500" />
+                  Carga do Dia (Materiais)
+                </h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Itens da requisição disponíveis no setor</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                {MATERIAIS_CARGA.map((item, idx) => (
+                  <div key={idx} className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-emerald-200 dark:hover:border-emerald-700 transition-colors">
+                    <div className="flex flex-col gap-1.5 overflow-hidden">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 w-fit">
+                        CÓD: {item.codigo}
+                      </span>
+                      <span className="font-semibold text-slate-800 dark:text-white text-sm leading-tight truncate whitespace-normal line-clamp-2">
+                        {item.descricao}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center justify-center shrink-0 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800/50 rounded-xl p-2 min-w-[3.5rem]">
+                      <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-0.5">Qtd</span>
+                      <span className="text-lg font-black text-emerald-700 dark:text-emerald-400 leading-none">{item.quantidade}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           )}
 
@@ -2543,6 +2841,15 @@ export default function App() {
             >
               <BookOpen className="w-5 h-5" />
               <span className="text-[9px] font-medium">POP</span>
+            </button>
+          </li>
+          <li className="flex-shrink-0">
+            <button 
+              onClick={() => setActiveTab('materiais')}
+              className={`flex flex-col items-center justify-center w-14 h-full gap-1 ${activeTab === 'materiais' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}
+            >
+              <Package className="w-5 h-5" />
+              <span className="text-[9px] font-medium">Materiais</span>
             </button>
           </li>
           <li className="flex-shrink-0">

@@ -6,6 +6,12 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+@variant dark (&:where(.dark, .dark *));
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 body {
   background-color: #f8fafc; /* slate-50 */
   color: #0f172a; /* slate-900 */
