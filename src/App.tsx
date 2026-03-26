@@ -436,7 +436,7 @@ const TECHNICAL_TERMS = [
 const DAILY_TASKS = [
   { id: 0, time: "07:00", task: "INÍCIO: Ligar computadores, checar PS Orto (higienização/fichas) e pedir kit curativo/instrumental.", done: false, alert: true, category: "rotina" },
   { id: 2.5, time: "07:30", task: "Quarta/Quinta: Perguntar para a secretaria qual chefe da anestesia está hoje.", done: false, alert: true, category: "rotina" },
-  { id: 3, time: "08:00", task: "Passar vendo altas do particular.", done: true, category: "rotina" },
+  { id: 3, time: "08:00", task: "Passar vendo altas do particular.", done: false, category: "rotina" },
   { id: 4, time: "10:00", task: "Avisar CME para buscar material no Curativo.", done: false, category: "rotina" },
   { id: 5, time: "11:00", task: "MAPA: Printar Mapa Cirúrgico (Salas D e K) e mandar pro R4. Formalizar pedidos.", done: false, alert: true, category: "mapa" },
   { id: 5.5, time: "12:00", task: "ALMOÇO: Intervalo de 1 hora (Retorno às 13:00).", done: false, alert: true, category: "rotina" },
@@ -501,8 +501,9 @@ const PROTOCOLS = [
     icon: <Activity className="w-5 h-5 text-emerald-500" />,
     items: [
       { title: "Pediátrica", desc: "Prioridade pediátrica e por idade. Sempre começar pela menor idade. Verificar se o mapa está errado. Jejum para menor é prejudicial." },
+      { title: "Angioplastia (Restrição)", desc: "Angioplastia interfere na cirurgia. O paciente deve obrigatoriamente aguardar 6 meses após o procedimento para ser reabordado cirurgicamente." },
       { title: "Observações do Mapa", desc: "NUNCA tirar a observação do mapa cirúrgico (médico que coloca). Mandar foto da obs pro médico para complementar." },
-      { title: "Solicitação de Sangue", desc: "Obrigatório para cirurgias de alta complexidade (Próteses de joelho/quadril, revisões e fraturas de fêmur). Sempre confirmar a necessidade com o cirurgião responsável." },
+      { title: "Solicitação de Sangue", desc: "Cirurgias de alta complexidade reservam 2 bolsas de sangue (Próteses de joelho/quadril, revisões e fraturas de fêmur). Sempre confirmar a necessidade com o cirurgião responsável." },
       { title: "Logística de Coleta (Sangue)", desc: "Pacientes internados: coleta no mesmo dia. Internação no dia seguinte (Convênio/Particular): enviar info para Jéssica (gestora/enfermeira) organizar a RT. Internação no dia seguinte (SUS): enviar para Eliane na enfermaria." },
       { title: "Vagas de UTI", desc: "Monitorar a necessidade, pois a confirmação depende da liberação do risco cirúrgico. É obrigatório pontuar e formalizar no mapa cirúrgico quantas vagas de UTI foram solicitadas." },
       { title: "Risco Cirúrgico", desc: "Realizado pelo cardiologista e pelo anestesista. A informação deve ser repassada ao anestesista no momento da entrega do mapa (Avisar a Cris e o chefe da anestesia)." },
@@ -510,7 +511,8 @@ const PROTOCOLS = [
       { title: "Salas de Cirurgia (CC2)", desc: "No CC2 opera preferencialmente o Dr. Ivan Killing, porém os médicos têm autonomia total para decidir onde desejam operar seus pacientes." },
       { title: "Comunicação do Mapa", desc: "O mapa cirúrgico e o OPME devem ser compartilhados com a equipe médica, residentes, regulação e setores de apoio." },
       { title: "Bater Mapa (SUS/Convênio)", desc: "Lembrar e reforçar que devemos bater o mapa com o pessoal do SUS e Convênio dos pacientes que irão internar um dia antes para informar a elas quem será." },
-      { title: "Cancelamento de Cirurgia", desc: "Quando o Dr. não atende, devemos cancelar a cirurgia." },
+      { title: "Cancelamento de Cirurgia", desc: "Se uma cirurgia é cancelada, deve-se obrigatoriamente justificar no mapa cirúrgico. (Quando o Dr. não atende, devemos cancelar a cirurgia)." },
+      { title: "Material de Urgência (PS)", desc: "Quando há uma intercorrência (paciente proveniente do PS como urgência), os médicos podem pegar o material da Ortopedia pelo consignado do SUS." },
       { title: "OPME", desc: "Fio de Kischner 2.0 + 2.5. Caixas outros vão na caixa OPME. Código para itens OPME: 47716. Código para caixa de OPME: 13. Fornecedor: SUS pode ser mais de um. Para marcar cirurgia com material, pedir OPME por e-mail." },
       { title: "Equipamentos Específicos", desc: "Toda cirurgia de mão vai caixa de mão, e dependendo uma cirurgia de plexo inclui uma caixa de micro. Intensificador de imagem e perfurador só em cirurgias que vão material de síntese." },
       { title: "Ícone Paciente Deitado", desc: "Quando aparece o ícone de paciente deitado no mapa cirúrgico, significa que ele já está internado. Ligar no setor e avisar." },
@@ -636,12 +638,12 @@ const PROTOCOLS = [
     category: "POP - Procedimentos por Especialidade",
     icon: <Activity className="w-5 h-5 text-indigo-500" />,
     items: [
-      { title: "Mão e Microcirurgia", desc: "Dr. Ivan e Dra. Marcela. Máximo de 5 cirurgias por dia na especialidade. Enviar guia inicial para conferência de material." },
-      { title: "Pediátrica e Reconstrução", desc: "Dr. Erick e Dra. Ana Paula. Prioridade no mapa cirúrgico (por idade, menor primeiro). Jejum prolongado é prejudicial." },
-      { title: "Quadril e Joelho", desc: "Dr. Juan, Dr. Bernardo, Dra. Barbara, Dr. Lucas. Cirurgias de alta complexidade (próteses, revisões, fraturas de fêmur) exigem solicitação de sangue e reserva de UTI." },
-      { title: "Pé e Tornozelo", desc: "Dr. Mario, Dr. Juliano M., Dr. Augusto. (Obs: Na segunda-feira só vem um médico por vez conforme escala)." },
-      { title: "Ombro", desc: "Dr. Juliano Santini. (Procedimentos específicos a definir)." },
-      { title: "Tumor Ósseo", desc: "Dr. João Pedro Motter. (Procedimentos específicos a definir)." }
+      { title: "Mão e Microcirurgia", desc: "Dr. Ivan e Dra. Marcela. Máximo de 5 cirurgias por dia na especialidade. Enviar guia inicial para conferência de material. Atendimento: Manhã." },
+      { title: "Pediátrica e Reconstrução", desc: "Dr. Erick e Dra. Ana Paula. Prioridade no mapa cirúrgico (por idade, menor primeiro). Jejum prolongado é prejudicial. Reconstrução alinhada com Pediátrica. Operam: Quarta e Sexta. Atendimento: Tarde." },
+      { title: "Quadril e Joelho", desc: "Dr. Juan, Dr. Bernardo, Dra. Barbara, Dr. Lucas. Cirurgias de alta complexidade (próteses, revisões, fraturas de fêmur) exigem reserva de 2 bolsas de sangue e reserva de UTI. Joelho opera: Terça e Sexta (Atendimento: Manhã). Quadril opera: Terça (Atendimento: Manhã)." },
+      { title: "Pé e Tornozelo", desc: "Dr. Mario, Dr. Juliano M., Dr. Augusto. Opera: Segunda-feira. Atendimento: Segunda (Tarde) e Sexta (Manhã). (Obs: Na segunda-feira só vem um médico por vez conforme escala)." },
+      { title: "Ombro", desc: "Dr. Juliano Santini. Opera: Quarta-feira. Atendimento: Manhã." },
+      { title: "Tumor Ósseo", desc: "Dr. João Pedro Motter. Opera: Terça-feira. Atendimento: Tarde." }
     ]
   },
   {
@@ -671,18 +673,27 @@ const MAPAS_ESPECIALIDADES = [
   { id: 'sex_pe', name: 'Pé (Sexta) - Dr. Mario / Dr. Juliano M. / Dr. Augusto' }
 ];
 
-const PRECEPTORES = [
-  { doctor: "Dr. Juan Capriotti (Chefe da Ortopedia)", specialty: "Joelho", time: "Segunda de manhã" },
-  { doctor: "Dr. Mario / Dr. Juliano M. / Dr. Augusto", specialty: "Pé e Tornozelo", time: "Segunda-feira", note: "Apenas um médico por vez conforme escala" },
-  { doctor: "Dra. Barbara / Dr. Lucas", specialty: "Quadril", time: "Terça-feira" },
-  { doctor: "Dr. João Pedro Motter", specialty: "Tumor Ósseo", time: "Terça-feira" },
-  { doctor: "Dr. Juliano Santini Gerlack", specialty: "Ombro", time: "Quarta-feira" },
-  { doctor: "Dr. Erick / Dra. Ana Paula", specialty: "Pediátrica e Reconstrução", time: "Quarta-feira" },
-  { doctor: "Dr. Juan Capriotti (Chefe da Ortopedia)", specialty: "Atendimento", time: "Quarta de tarde" },
-  { doctor: "Dr. Ivan / Dra. Marcela", specialty: "Mão e Microcirurgia", time: "Quinta-feira" },
-  { doctor: "Dr. Bernardo Damian", specialty: "Joelho", time: "Sexta-feira" },
-  { doctor: "Dra. Barbara / Dr. Lucas", specialty: "Quadril", time: "Sexta-feira" },
-  { doctor: "Dr. Mario / Dr. Juliano M. / Dr. Augusto", specialty: "Pé e Tornozelo", time: "Sexta-feira" }
+const ESCALA_AMBULATORIO = [
+  { specialty: "Joelho", day: "Segunda-feira", shift: "Manhã", doctors: "Dr. Juan Capriotti / Dr. Bernardo" },
+  { specialty: "Pé e Tornozelo", day: "Segunda-feira", shift: "Tarde", doctors: "Dr. Mario / Dr. Juliano M. / Dr. Augusto", note: "Apenas um médico por vez" },
+  { specialty: "Quadril", day: "Terça-feira", shift: "Manhã", doctors: "Dra. Barbara / Dr. Lucas" },
+  { specialty: "Tumor Ósseo", day: "Terça-feira", shift: "Tarde", doctors: "Dr. João Pedro Motter" },
+  { specialty: "Ombro", day: "Quarta-feira", shift: "Manhã", doctors: "Dr. Juliano Santini" },
+  { specialty: "Pediátrica", day: "Quarta-feira", shift: "Tarde", doctors: "Dr. Erick / Dra. Ana Paula" },
+  { specialty: "Reconstrução", day: "Quarta-feira", shift: "Tarde", doctors: "Equipe Reconstrução" },
+  { specialty: "Mão e Microcirurgia", day: "Quinta-feira", shift: "Manhã", doctors: "Dr. Ivan / Dra. Marcela" },
+  { specialty: "Pé e Tornozelo", day: "Sexta-feira", shift: "Manhã", doctors: "Dr. Mario / Dr. Juliano M. / Dr. Augusto" }
+];
+
+const ESCALA_CC = [
+  { specialty: "Pé e Tornozelo", days: "Segunda-feira", rules: "Apenas um médico por vez conforme escala" },
+  { specialty: "Quadril", days: "Terça-feira", rules: "" },
+  { specialty: "Tumor Ósseo", days: "Terça-feira", rules: "" },
+  { specialty: "Joelho", days: "Terça e Sexta-feira", rules: "" },
+  { specialty: "Ombro", days: "Quarta-feira", rules: "" },
+  { specialty: "Pediátrica", days: "Quarta e Sexta-feira", rules: "Sempre priorizar por idade (menor primeiro)" },
+  { specialty: "Reconstrução", days: "Quarta e Sexta-feira", rules: "Alinhada com a Pediátrica" },
+  { specialty: "Mão e Microcirurgia", days: "Quinta-feira", rules: "Máximo de 5 cirurgias por dia" }
 ];
 
 const ROTEIRO_STEPS = [
@@ -723,7 +734,7 @@ const ROTEIRO_STEPS = [
     items: [
       "Pedido de Guia: O médico pediu? Pare tudo e faça a guia para não ficar sob sua responsabilidade.",
       "OPME: Peça o material por e-mail. Fios de Kischner 2.0 e 2.5 vão na caixa OPME. Código itens OPME: 47716. Código caixa OPME: 13.",
-      "Sangue: Obrigatório para alta complexidade (próteses, fêmur). Paciente internado = coleta hoje. Interna amanhã = avise Jéssica (Convênio) ou Eliane (SUS).",
+      "Sangue: Reserva de 2 bolsas para alta complexidade (próteses, fêmur). Paciente internado = coleta hoje. Interna amanhã = avise Jéssica (Convênio) ou Eliane (SUS).",
       "UTI e Risco: Anote no mapa se precisa de UTI. Avise a Cris e o chefe da anestesia sobre o risco cirúrgico.",
       "Prazos do Mapa: 11:00 printar e mandar pro R4. 13:15 mandar para Regulação, Claudirene, Juliana (Internamento) e Grupo da Orto."
     ]
@@ -1064,7 +1075,7 @@ export default function App() {
                 onClick={() => setActiveTab('preceptores')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-medium text-sm ${activeTab === 'preceptores' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
               >
-                <Users className={`w-5 h-5 ${activeTab === 'preceptores' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} /> Preceptores
+                <Users className={`w-5 h-5 ${activeTab === 'preceptores' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} /> Escalas
               </button>
             </li>
             <li>
@@ -1175,7 +1186,7 @@ export default function App() {
         {/* HEADER (Desktop only) */}
         <header className="bg-transparent h-20 hidden md:flex items-center justify-between px-8 shrink-0 sticky top-0 z-10">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-500 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent capitalize tracking-tight">
-            {activeTab === 'mapa' ? 'Mapa Cirúrgico' : activeTab === 'roteiro' ? 'Roteiro Prático' : activeTab === 'preceptores' ? 'Preceptores' : activeTab === 'dicas' ? 'Dicas e Macetes' : activeTab === 'termos' ? 'Termos Técnicos' : activeTab === 'ramais' ? 'Ramais Úteis' : activeTab}
+            {activeTab === 'mapa' ? 'Mapa Cirúrgico' : activeTab === 'roteiro' ? 'Roteiro Prático' : activeTab === 'preceptores' ? 'Escalas Médicas' : activeTab === 'dicas' ? 'Dicas e Macetes' : activeTab === 'termos' ? 'Termos Técnicos' : activeTab === 'ramais' ? 'Ramais Úteis' : activeTab}
           </h2>
           <div className="flex items-center gap-5">
             <div className="relative">
@@ -1207,7 +1218,7 @@ export default function App() {
         <div className="md:hidden bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-900 px-4 py-3 shrink-0 flex flex-col gap-2 sticky top-0 z-10">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-500 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent capitalize tracking-tight">
-              {activeTab === 'mapa' ? 'Mapa Cirúrgico' : activeTab === 'roteiro' ? 'Roteiro Prático' : activeTab === 'preceptores' ? 'Preceptores' : activeTab === 'dicas' ? 'Dicas e Macetes' : activeTab === 'termos' ? 'Termos Técnicos' : activeTab === 'ramais' ? 'Ramais Úteis' : activeTab === 'materiais' ? 'Materiais' : activeTab}
+              {activeTab === 'mapa' ? 'Mapa Cirúrgico' : activeTab === 'roteiro' ? 'Roteiro Prático' : activeTab === 'preceptores' ? 'Escalas Médicas' : activeTab === 'dicas' ? 'Dicas e Macetes' : activeTab === 'termos' ? 'Termos Técnicos' : activeTab === 'ramais' ? 'Ramais Úteis' : activeTab === 'materiais' ? 'Materiais' : activeTab}
             </h2>
             <div className="flex items-center gap-2">
               <button 
@@ -2337,96 +2348,163 @@ export default function App() {
             </motion.div>
           )}
 
-          {/* --- PRECEPTORES VIEW --- */}
+          {/* --- ESCALAS VIEW --- */}
           {activeTab === 'preceptores' && (
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="max-w-5xl mx-auto space-y-6 pb-24"
+              className="max-w-5xl mx-auto space-y-8 pb-24"
             >
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Preceptores da Ortopedia</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Visita Comercial - Horários e Especialidades</p>
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Escalas Médicas</h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Ambulatório e Centro Cirúrgico</p>
               </div>
 
-              <div className="md:hidden space-y-4">
-                {PRECEPTORES.map((item, idx) => (
-                  <div key={idx} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
-                    <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg shrink-0 border border-blue-200 dark:border-blue-800">
-                        {item.doctor.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-slate-800 dark:text-white text-base leading-tight">{item.doctor}</h3>
-                        <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
-                          {item.specialty}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <div className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300 font-medium bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                        <div className="p-1.5 bg-white dark:bg-slate-800 rounded-md shadow-sm">
-                          <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              {/* AMBULATÓRIO */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                  <Activity className="w-5 h-5" /> Ambulatório (Atendimento)
+                </h3>
+                
+                <div className="md:hidden space-y-4">
+                  {ESCALA_AMBULATORIO.map((item, idx) => (
+                    <div key={idx} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
+                      <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg shrink-0 border border-blue-200 dark:border-blue-800">
+                          {item.specialty.charAt(0)}
                         </div>
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Visita Comercial</span>
-                          <span>{item.time}</span>
+                        <div>
+                          <h3 className="font-bold text-slate-800 dark:text-white text-base leading-tight">{item.specialty}</h3>
+                          <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
+                            {item.day} - {item.shift}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <div className="flex flex-col gap-2">
+                          <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">
+                            <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold block mb-1">Médico(s)</span>
+                            {item.doctors}
+                          </div>
                           {item.note && (
-                            <span className="text-[10px] font-bold text-rose-500 dark:text-rose-400 mt-1 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-md border border-rose-100 dark:border-rose-800/50 w-fit">
+                            <span className="text-[10px] font-bold text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 px-2 py-1 rounded-md border border-rose-100 dark:border-rose-800/50 w-fit">
                               {item.note}
                             </span>
                           )}
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              <div className="hidden md:block bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="bg-slate-50/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
-                        <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Preceptor(es)</th>
-                        <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Especialidade</th>
-                        <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Horário (Visita Comercial)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                      {PRECEPTORES.map((item, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-colors group">
-                          <td className="py-4 px-6">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg shrink-0 border border-blue-100 dark:border-blue-800 group-hover:bg-blue-600 group-hover:text-white dark:group-hover:bg-blue-500 transition-colors">
-                                {item.doctor.charAt(0)}
-                              </div>
-                              <div className="font-medium text-slate-800 dark:text-white text-base">{item.doctor}</div>
-                              {item.note && (
-                                <div className="text-[10px] font-bold text-rose-500 dark:text-rose-400 uppercase tracking-tight mt-1 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-md border border-rose-100 dark:border-rose-800/50 w-fit">
-                                  {item.note}
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="py-4 px-6">
-                            <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-800 whitespace-nowrap shadow-sm">
-                              {item.specialty}
-                            </span>
-                          </td>
-                          <td className="py-4 px-6">
-                            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap bg-slate-50 dark:bg-slate-900/50 px-3 py-2 rounded-xl border border-slate-100 dark:border-slate-800 w-fit">
-                              <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-                              {item.time}
-                            </div>
-                          </td>
+                <div className="hidden md:block bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
+                          <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Especialidade</th>
+                          <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Dia / Turno</th>
+                          <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Médico(s)</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                        {ESCALA_AMBULATORIO.map((item, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-colors group">
+                            <td className="py-4 px-6">
+                              <div className="font-bold text-slate-800 dark:text-white text-base">{item.specialty}</div>
+                            </td>
+                            <td className="py-4 px-6">
+                              <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-800 whitespace-nowrap shadow-sm">
+                                {item.day} - {item.shift}
+                              </span>
+                            </td>
+                            <td className="py-4 px-6">
+                              <div className="flex flex-col gap-1">
+                                <span className="text-sm text-slate-600 dark:text-slate-300 font-medium">{item.doctors}</span>
+                                {item.note && (
+                                  <span className="text-[10px] font-bold text-rose-500 dark:text-rose-400 uppercase tracking-tight bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-md border border-rose-100 dark:border-rose-800/50 w-fit">
+                                    {item.note}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
+
+              {/* CENTRO CIRÚRGICO */}
+              <div className="space-y-4 pt-4">
+                <h3 className="text-xl font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2">
+                  <Syringe className="w-5 h-5" /> Centro Cirúrgico (CC)
+                </h3>
+                
+                <div className="md:hidden space-y-4">
+                  {ESCALA_CC.map((item, idx) => (
+                    <div key={idx} className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden hover:border-rose-200 dark:hover:border-rose-800 transition-colors">
+                      <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
+                        <div className="w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-lg shrink-0 border border-rose-200 dark:border-rose-800">
+                          {item.specialty.charAt(0)}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-slate-800 dark:text-white text-base leading-tight">{item.specialty}</h3>
+                          <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border border-rose-100 dark:border-rose-800">
+                            {item.days}
+                          </span>
+                        </div>
+                      </div>
+                      {item.rules && (
+                        <div className="p-4">
+                          <div className="text-sm text-slate-700 dark:text-slate-300 font-medium bg-rose-50/50 dark:bg-rose-900/20 p-3 rounded-xl border border-rose-100 dark:border-rose-800/50">
+                            <span className="text-xs text-rose-600 dark:text-rose-400 uppercase tracking-wider font-bold block mb-1">Regra / Observação</span>
+                            {item.rules}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="hidden md:block bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
+                          <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Especialidade</th>
+                          <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Dias de Cirurgia</th>
+                          <th className="py-4 px-6 font-semibold text-slate-700 dark:text-slate-300 text-sm whitespace-nowrap">Regras / Observações</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                        {ESCALA_CC.map((item, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-colors group">
+                            <td className="py-4 px-6">
+                              <div className="font-bold text-slate-800 dark:text-white text-base">{item.specialty}</div>
+                            </td>
+                            <td className="py-4 px-6">
+                              <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border border-rose-100 dark:border-rose-800 whitespace-nowrap shadow-sm">
+                                {item.days}
+                              </span>
+                            </td>
+                            <td className="py-4 px-6">
+                              {item.rules ? (
+                                <span className="text-sm text-slate-600 dark:text-slate-300 font-medium">{item.rules}</span>
+                              ) : (
+                                <span className="text-sm text-slate-400 dark:text-slate-500 italic">-</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
             </motion.div>
           )}
 
@@ -2876,7 +2954,7 @@ export default function App() {
               className={`flex flex-col items-center justify-center w-14 h-full gap-1 ${activeTab === 'preceptores' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}
             >
               <Users className="w-5 h-5" />
-              <span className="text-[9px] font-medium">Precept.</span>
+              <span className="text-[9px] font-medium">Escalas</span>
             </button>
           </li>
           <li className="flex-shrink-0">
